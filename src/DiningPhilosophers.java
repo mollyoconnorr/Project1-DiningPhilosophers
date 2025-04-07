@@ -27,6 +27,8 @@ public class DiningPhilosophers {
         private final int leftChopstick;
         private final int rightChopstick;
         private final Random random = new Random();
+        private static int philosophersDone = 0;
+        private static final Object lock = new Object();
 
         public Philosopher(int index) {
             this.index = index;
@@ -36,30 +38,39 @@ public class DiningPhilosophers {
 
         public void run() {
             try {
-                while (true) {
-                    // Thinking
-                    System.out.println("Philosopher " + index + " is thinking.");
-                    Thread.sleep(random.nextInt(2000) + 1000);
+                // Thinking
+                System.out.println("Philosopher " + index + " is thinking.");
+                Thread.sleep(random.nextInt(2000) + 1000);
 
-                    // Get permission from the waiter
-                    System.out.println("Philosopher " + index + " is hungry.");
-                    waiter.acquire();
+                // Ask waiter for permission to try eating
+                System.out.println("Philosopher " + index + " is hungry.");
+                waiter.acquire();
 
-                    // Pick up chopsticks
-                    chopsticks[leftChopstick].acquire();
-                    chopsticks[rightChopstick].acquire();
+                // Pick up chopsticks
+                chopsticks[leftChopstick].acquire();
+                chopsticks[rightChopstick].acquire();
 
-                    // Eating
-                    System.out.println("Philosopher " + index + " is eating.");
-                    Thread.sleep(random.nextInt(1000) + 1000);
+                // Eat
+                System.out.println("Philosopher " + index + " is eating.");
+                Thread.sleep(random.nextInt(1000) + 1000);
 
-                    // Put down chopsticks
-                    chopsticks[leftChopstick].release();
-                    chopsticks[rightChopstick].release();
-                    waiter.release();
+                // Put down chopsticks
+                chopsticks[leftChopstick].release();
+                chopsticks[rightChopstick].release();
+                waiter.release();
 
+                // Mark done
+                synchronized (lock) {
+                    philosophersDone++;
                     System.out.println("Philosopher " + index + " finished eating.");
+
+                    // If all philosophers ate once, exit
+                    if (philosophersDone == NUM_PHILOSOPHERS) {
+                        System.out.println("All philosophers have eaten once. Exiting program.");
+                        System.exit(0);  // Force exit
+                    }
                 }
+
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 System.out.println("Philosopher " + index + " was interrupted.");
