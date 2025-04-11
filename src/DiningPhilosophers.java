@@ -27,50 +27,60 @@ public class DiningPhilosophers {
         private final int leftChopstick;
         private final int rightChopstick;
         private final Random random = new Random();
+        private String state = "THINKING";
         private static int philosophersDone = 0;
         private static final Object lock = new Object();
 
         public Philosopher(int index) {
             this.index = index;
-            leftChopstick = index;
-            rightChopstick = (index + 1) % NUM_PHILOSOPHERS;
+            this.leftChopstick = index;
+            this.rightChopstick = (index + 1) % NUM_PHILOSOPHERS;
         }
 
         public void run() {
             try {
-                // Thinking
-                System.out.println("Philosopher " + index + " is thinking.");
-                Thread.sleep(random.nextInt(2000) + 1000);
+                while (true) {
+                    // Think
+                    state = "THINKING";
+                    System.out.println("Philosopher " + index + " is thinking.");
+                    Thread.sleep(random.nextInt(2000) + 1000);
 
-                // Ask waiter for permission to try eating
-                System.out.println("Philosopher " + index + " is hungry.");
-                waiter.acquire();
+                    // Ask waiter
+                    waiter.acquire();
 
-                // Pick up chopsticks
-                chopsticks[leftChopstick].acquire();
-                chopsticks[rightChopstick].acquire();
+                    // Try to pick up both chopsticks without blocking
+                    boolean gotLeft = chopsticks[leftChopstick].tryAcquire();
+                    boolean gotRight = chopsticks[rightChopstick].tryAcquire();
 
-                // Eat
-                System.out.println("Philosopher " + index + " is eating.");
-                Thread.sleep(random.nextInt(1000) + 1000);
+                    if (gotLeft && gotRight) {
+                        // Eat
+                        state = "EATING";
+                        System.out.println("Philosopher " + index + " is eating.");
+                        Thread.sleep(random.nextInt(1000) + 1000);
 
-                // Put down chopsticks
-                chopsticks[leftChopstick].release();
-                chopsticks[rightChopstick].release();
-                waiter.release();
+                        // Done eating
+                        chopsticks[leftChopstick].release();
+                        chopsticks[rightChopstick].release();
+                        waiter.release();
 
-                // Mark done
-                synchronized (lock) {
-                    philosophersDone++;
-                    System.out.println("Philosopher " + index + " finished eating.");
+                        synchronized (lock) {
+                            philosophersDone++;
+                            System.out.println("Philosopher " + index + " finished eating.");
 
-                    // If all philosophers ate once, exit
-                    if (philosophersDone == NUM_PHILOSOPHERS) {
-                        System.out.println("All philosophers have eaten once. Exiting program.");
-                        System.exit(0);  // Force exit
+                            if (philosophersDone == NUM_PHILOSOPHERS) {
+                                System.out.println("All philosophers have eaten once. Exiting program.");
+                                System.exit(0);
+                            }
+                        }
+                        return; // Done
+                    } else {
+                        // Couldn't eat, release anything held and go back to thinking
+                        if (gotLeft) chopsticks[leftChopstick].release();
+                        if (gotRight) chopsticks[rightChopstick].release();
+                        waiter.release();
+                        System.out.println("Philosopher " + index + " couldn't get both chopsticks. Back to thinking.");
                     }
                 }
-
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 System.out.println("Philosopher " + index + " was interrupted.");
