@@ -62,7 +62,7 @@ Named Philosophers:
 Each philosopher is randomly assigned a name from a list of some of the smartest minds we know — including legends like Socrates, Plato, and… Nate Williams (cough cough, extra credit please). 
 
 Stac Food:
-We modeled the dining environment to resemble a the Stac. Ironically, you might expect this to cause some philosophers to never eat — but don’t worry, they still manage to grab a bite eventually hoping they get Tammy's pizza.
+We modeled the dining environment to resemble the Stac. Ironically, you might expect this to cause some philosophers to never eat — but don’t worry, they still manage to grab a bite eventually hoping they get Tammy's pizza.
 
 Custom Thought Topics:
 When thinking, each philosopher chooses randomly from a curated list of deep topics, like magnetic tape. This adds variety and personality to their thinking state, making it 
