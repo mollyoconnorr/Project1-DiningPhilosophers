@@ -10,3 +10,4 @@
 out/
 dist/
 *.iml
+.DS_Store

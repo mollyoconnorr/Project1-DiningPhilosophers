@@ -9,7 +9,8 @@ In this scenario, five philosophers sit around a circular table. In the center i
 - **Thinking** – No interaction with shared resources.
 - **Hungry/Eating** – They must pick up both the left and right chopsticks to eat.
 
-To view UML Diagrams click here! [UML-DiningPhilosopher](https://github.com/user-attachments/assets/ceeb287c-171f-4169-bbaf-5876c852e357)
+### UML Diagram:
+![Dining Philosophers Diagram](docs/UML.png)
 
 #### Constraints:
 - A philosopher may only pick up one chopstick at a time.
