@@ -1,3 +1,5 @@
+import javax.swing.*;
+
 /**
  * This class models a philosopher in the Dining Philosophers problem.
  * Each philosopher thinks, picks up chopsticks, eats, and then puts down the chopsticks.
@@ -37,6 +39,9 @@ public class Philosopher extends Thread {
     /** Flag to control the philosopher's activity */
     private volatile boolean running = true;
 
+    /** Keep track of times philosopher has eaten */
+    private int eatCount;
+
     /**
      * Constructor to initialize the philosopher.
      *
@@ -46,12 +51,13 @@ public class Philosopher extends Thread {
      * @param gui   Reference to the GUI for state updates
      * @param name  The name of the philosopher
      */
-    public Philosopher(int id, Chopstick left, Chopstick right, DiningPhilosophersGUI gui, String name) {
+    public Philosopher(int id, Chopstick left, Chopstick right, DiningPhilosophersGUI gui, String name, int eatCount) {
         this.id = id;
         this.leftChopstick = left;
         this.rightChopstick = right;
         this.gui = gui;
         this.name = name;
+        this.eatCount = 0;
     }
 
     /**
@@ -59,6 +65,9 @@ public class Philosopher extends Thread {
      */
     @Override
     public void run() {
+        SwingUtilities.invokeLater(() -> {
+            ((JLabel) ((JPanel) gui.getContentPane().getComponent(1)).getComponent(id * 4 + 3)).setText("Eat Count: " + eatCount);
+        });
         while (running) {
             try {
                 think();
@@ -74,6 +83,9 @@ public class Philosopher extends Thread {
                 break;
             }
         }
+        leftChopstick.putDown();
+        rightChopstick.putDown();
+        gui.updateChopstickState(id, "Available");
         gui.updateState(id, "stopped");
     }
 
@@ -141,8 +153,13 @@ public class Philosopher extends Thread {
     private void eat() throws InterruptedException {
         String foodItem = FOODS[(int) (Math.random() * FOODS.length)];
         gui.updateState(id, "Eating " + foodItem);
+        eatCount ++;
         System.out.println(name + " is eating.");
-        Thread.sleep((int) (Math.random() * 4000)); // Simulate eating
+        Thread.sleep((int) (Math.random() * 2500)); // Simulate eating
+        // ChatGPT generated this GUI assistance line
+        SwingUtilities.invokeLater(() -> {
+            ((JLabel) ((JPanel) gui.getContentPane().getComponent(1)).getComponent(id * 4 + 3)).setText("Eat Count: " + eatCount);
+        });
     }
 
     /**
@@ -161,6 +178,7 @@ public class Philosopher extends Thread {
      */
     public void stopPhilosopher() {
         running = false;
+        this.interrupt();
     }
 }
 

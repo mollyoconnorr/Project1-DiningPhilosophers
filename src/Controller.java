@@ -59,7 +59,7 @@ public class Controller {
         for (int i = 0; i < numPhilosophers; i++) {
             Chopstick left = chopsticks[i];
             Chopstick right = chopsticks[(i + 1) % numPhilosophers];
-            philosophers[i] = new Philosopher(i, left, right, gui, philosopherNames[i]);
+            philosophers[i] = new Philosopher(i, left, right, gui, philosopherNames[i], 0);
             gui.updateState(i, "stopped");
         }
     }

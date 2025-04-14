@@ -31,6 +31,8 @@ public class DiningPhilosophersGUI extends JFrame {
     /** Reference to the Controller to interact with the simulation logic */
     private Controller controller;
 
+    private final JLabel[] eatCountLabels;
+
     /**
      * Constructor to initialize the GUI with a given number of philosophers and their names.
      * Sets up the layout, header, table for displaying philosopher and chopstick states,
@@ -43,13 +45,15 @@ public class DiningPhilosophersGUI extends JFrame {
         this.philosopherNames = philosopherNames;
         philosopherLabels = new JLabel[numPhilosophers];
         chopstickLabels = new JLabel[numPhilosophers];
+        eatCountLabels = new JLabel[numPhilosophers];
+
 
         setTitle("Dining Philosophers");
         setLayout(new BorderLayout());
         setSize(1500, 500); // Bigger size
 
         // Header panel
-        JPanel headerPanel = new JPanel(new GridLayout(1, 3));
+        JPanel headerPanel = new JPanel(new GridLayout(1, 4));
         add(headerPanel, BorderLayout.NORTH);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // top, left, bottom, right
         JLabel nameHeader = new JLabel("Philosopher Name", SwingConstants.CENTER);
@@ -63,6 +67,11 @@ public class DiningPhilosophersGUI extends JFrame {
         JLabel chopstickHeader = new JLabel("Chopstick Status", SwingConstants.CENTER);
         chopstickHeader.setFont(new Font("SansSerif", Font.BOLD, 16));
         headerPanel.add(chopstickHeader);
+
+        JLabel eatCountHeader = new JLabel("Eat Count", SwingConstants.CENTER);
+        eatCountHeader.setFont(new Font("SansSerif", Font.BOLD, 16));
+        headerPanel.add(eatCountHeader);
+
 
         // Main table panel
         JPanel tablePanel = new JPanel(new GridLayout(numPhilosophers, 3));
@@ -79,6 +88,10 @@ public class DiningPhilosophersGUI extends JFrame {
             chopstickLabels[i] = new JLabel("Available", SwingConstants.CENTER);
             chopstickLabels[i].setFont(new Font("SansSerif", Font.PLAIN, 14));
             tablePanel.add(chopstickLabels[i]);
+
+            eatCountLabels[i] = new JLabel("0", SwingConstants.CENTER);  // Default value 0
+            eatCountLabels[i].setFont(new Font("SansSerif", Font.PLAIN, 14));
+            tablePanel.add(eatCountLabels[i]);
         }
         add(tablePanel, BorderLayout.CENTER);
 
@@ -148,16 +161,16 @@ public class DiningPhilosophersGUI extends JFrame {
      * Updates the chopstick label for a given chopstick with the new state.
      * The color changes based on whether the chopstick is held or available.
      *
-     * @param chopstickId the ID of the chopstick
+     * @param Id the ID of the philosopher
      * @param state the new state of the chopstick (Held or Available)
      */
-    public void updateChopstickState(int chopstickId, String state) {
+    public void updateChopstickState(int Id, String state) {
         SwingUtilities.invokeLater(() -> {
-            chopstickLabels[chopstickId].setText(state);
+            chopstickLabels[Id].setText(state);
             if (state.equalsIgnoreCase("Held")) {
-                chopstickLabels[chopstickId].setForeground(new Color(204, 0, 0));
+                chopstickLabels[Id].setForeground(new Color(204, 0, 0));
             } else {
-                chopstickLabels[chopstickId].setForeground(Color.BLACK);
+                chopstickLabels[Id].setForeground(Color.BLACK);
             }
         });
     }
