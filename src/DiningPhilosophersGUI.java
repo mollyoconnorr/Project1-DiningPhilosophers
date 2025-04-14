@@ -16,34 +16,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * File: DinningPhilosophersGUI
- * Date: 04/12/2025
- * Description:
- * The {@code DiningPhilosophersGUI} class provides a graphical interface to visualize
- * the Dining Philosophers simulation. It displays each philosopher's name, current state
- * (e.g., thinking, hungry, eating), and the status of each chopstick (available or held).
- *
- * <p>
- * This GUI includes control buttons to start and stop the simulation, and updates the
- * visual representation in real-time based on the simulation’s progress. Each philosopher
- * and chopstick has a dedicated label whose appearance (text and color) dynamically reflects
- * their state, enhancing the user's understanding of synchronization behavior.
- *
- * <p>
- * The GUI layout is constructed using Java Swing components such as {@link JFrame},
- * {@link JPanel}, {@link JLabel}, and {@link JButton}, and uses a {@link Controller}
- * object to communicate with the simulation logic.
- *
- * <p>
- * This implementation serves both educational and demonstrative purposes,
- * helping users understand how threads and resource sharing work in concurrent systems.
- *
- * <p>
- * <b>Note:</b> ChatGPT was used to assist with the design and layout of the graphical interface.
- *
- * @author Murat Guzelocak and Molly O'Conor
- */
 public class DiningPhilosophersGUI extends JFrame {
     /** Arrays to store the labels for philosopher names, states, and chopstick statuses */
     private final JLabel[] philosopherLabels;
