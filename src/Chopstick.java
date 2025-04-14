@@ -1,34 +1,41 @@
+import java.util.concurrent.locks.ReentrantLock;
+
 /**
  * Chopstick class represents a chopstick in the Dining Philosophers problem.
- * It provides synchronized methods to simulate picking up and putting down a chopstick.
- * This class ensures that only one philosopher can hold a chopstick at a time.
- * <p>
+ * It uses a ReentrantLock to manage access and ensure mutual exclusion.
+ *
  * Author: Murat Can Guzelocak and Molly O'Conor
  * Date: 04/13/2025
  */
 public class Chopstick {
-    private boolean inUse = false;
+    private final ReentrantLock lock;
 
     /**
-     * Attempts to pick up the chopstick.
-     * This method returns true if the chopstick was successfully picked up,
-     * and false if it is already in use by another philosopher.
-     *
-     * @return true if the chopstick was picked up, false if it is already in use
+     * Constructor to create a chopstick with a fair ReentrantLock.
      */
-    public synchronized boolean pickUp() {
-        if (!inUse) {
-            inUse = true;
-            return true;
-        }
-        return false;
+    public Chopstick() {
+        // Fair lock to prevent starvation: threads acquire the lock in FIFO order
+        this.lock = new ReentrantLock(true);
     }
 
     /**
-     * Puts down the chopstick, making it available for other philosophers to use.
-     * This method is synchronized to ensure thread safety when changing the status of the chopstick.
+     * Attempts to pick up the chopstick.
+     * This method returns true if the lock was successfully acquired,
+     * false otherwise.
+     *
+     * @return true if the chopstick was picked up, false if it's already in use
      */
-    public synchronized void putDown() {
-        inUse = false;
+    public boolean pickUp() {
+        // Try acquiring the lock immediately without blocking
+        return lock.tryLock();
+    }
+
+    /**
+     * Puts down the chopstick, making it available to others.
+     */
+    public void putDown() {
+        if (lock.isHeldByCurrentThread()) {
+            lock.unlock();
+        }
     }
 }
