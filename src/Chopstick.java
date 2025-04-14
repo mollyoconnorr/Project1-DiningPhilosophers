@@ -3,7 +3,7 @@
  * It provides synchronized methods to simulate picking up and putting down a chopstick.
  * This class ensures that only one philosopher can hold a chopstick at a time.
  * <p>
- * Author: Murat Guzelocak and Molly O'Conor
+ * Author: Murat Can Guzelocak and Molly O'Conor
  * Date: 04/13/2025
  */
 public class Chopstick {

@@ -8,19 +8,34 @@
  */
 
 public class Philosopher extends Thread {
-    private static final String[] FOODS = { // Array of foods that philosophers will eat
+
+    /** Array of foods that philosophers will eat */
+    private static final String[] FOODS = {
             "Tammy's pizza", "hamburger", "flavorless chicken", "fries", "bagel", "rice and corn", "rice and corn", "rice and corn"
     };
-    private static final String[] THOUGHTS = { // Array of thoughts for philosophers
+
+    /** Array of thoughts for philosophers */
+    private static final String[] THOUGHTS = {
             "magnetic tape", "the meaning of life", "how to pick up chopsticks faster", "what's for dinner",
             "ethics of eating", "how to avoid starvation", "fluffy pink bunny slippers"
     };
-    private final int id; // Unique ID for the philosopher
-    private final Chopstick leftChopstick; // Reference to the left chopstick
-    private final Chopstick rightChopstick; // Reference to the right chopstick
-    private final DiningPhilosophersGUI gui; // GUI reference for updating the state
-    private final String name; // Philosopher's name
-    private volatile boolean running = true; // Flag to control the philosopher's activity
+
+    /** Unique ID for the philosopher */
+    private final int id;
+
+    /** Reference to the left chopstick */
+    private final Chopstick leftChopstick;
+
+    /** Reference to the right chopstick */
+    private final Chopstick rightChopstick;
+
+    /** GUI reference for updating the state */
+    private final DiningPhilosophersGUI gui;
+
+    /** Philosopher's name */
+    private final String name;
+    /** Flag to control the philosopher's activity */
+    private volatile boolean running = true;
 
     /**
      * Constructor to initialize the philosopher.

@@ -7,22 +7,22 @@
  * Date: 04/13/2025
  */
 public class Controller {
-    // Number of philosophers participating in the simulation
+    /** Number of philosophers participating in the simulation */
     private final int numPhilosophers;
 
-    // Array of philosopher names
+    /** Array of philosopher names */
     private final String[] philosopherNames;
 
-    // Reference to the GUI that displays the state of the simulation
+    /** Reference to the GUI that displays the state of the simulation */
     private final DiningPhilosophersGUI gui;
 
-    // Array of Philosopher objects representing the philosophers
+    /** Array of Philosopher objects representing the philosophers */
     private Philosopher[] philosophers;
 
-    // Array of Chopstick objects representing the chopsticks used by the philosophers
+    /** Array of Chopstick objects representing the chopsticks used by the philosophers */
     private Chopstick[] chopsticks;
 
-    // Flag to indicate whether the simulation is running or not
+    /** Flag to indicate whether the simulation is running or not */
     private volatile boolean isRunning = false;
 
     /**
