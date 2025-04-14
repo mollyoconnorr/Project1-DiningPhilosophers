@@ -10,7 +10,10 @@ In this scenario, five philosophers sit around a circular table. In the center i
 - **Hungry/Eating** – They must pick up both the left and right chopsticks to eat.
 
 ### UML Diagram:
+
 ![Dining Philosophers Diagram](docs/UML.png)
+
+---
 
 #### Constraints:
 - A philosopher may only pick up one chopstick at a time.
